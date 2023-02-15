@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import med.voll.api.endereco.DadosEndereco;
+import med.voll.api.endereco.DadosCadastroEndereco;
 
 public record DadosCadastroMedico(
 		@NotBlank
@@ -22,6 +22,6 @@ public record DadosCadastroMedico(
 		Especialidade especialidade,
 		@NotNull
 		@Valid
-		DadosEndereco endereco) {
+		DadosCadastroEndereco endereco) {
 
 }
