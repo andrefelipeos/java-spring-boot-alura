@@ -36,6 +36,12 @@ public class MedicoController {
 		repository.save(new Medico(dados));
 	}
 
+	@GetMapping("/{identificador}")
+	public ResponseEntity<DadosDetalhamentoMedico> detalhar(@PathVariable Long identificador) {
+		var medico = repository.getReferenceById(identificador);
+		return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
+	}
+
 	@GetMapping
 	public ResponseEntity<Page<DadosListagemMedico>> listar(@PageableDefault(size = 10, sort = {"nome", "especialidade"}) Pageable paginacao) {
 		var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
