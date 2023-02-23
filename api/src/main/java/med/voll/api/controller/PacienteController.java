@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.validation.Valid;
 import med.voll.api.paciente.DadosAtualizacaoPaciente;
@@ -32,8 +33,11 @@ public class PacienteController {
 
 	@PostMapping
 	@Transactional
-	public void cadastrar(@RequestBody @Valid DadosCadastroPaciente dados) {
-		repository.save(new Paciente(dados));
+	public ResponseEntity<DadosDetalhamentoPaciente> cadastrar(@RequestBody @Valid DadosCadastroPaciente dados, UriComponentsBuilder uriBuilder) {
+		var paciente = new Paciente(dados);
+		repository.save(paciente);
+		var uri = uriBuilder.path("/pacientes/{identificador}").buildAndExpand(paciente.getIdentificador()).toUri();
+		return ResponseEntity.created(uri).body(new DadosDetalhamentoPaciente(paciente));
 	}
 
 	@GetMapping("/{identificador}")
