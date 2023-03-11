@@ -23,11 +23,14 @@ public class TokenService {
 	@Value("${api.configuration.default-timezone}")
 	private String timezone;
 
+	@Value("${api.full-name}")
+	private String apiFullName;
+
 	public String gerarToken(Usuario usuario) {
 		try {
 		    var algoritmo = Algorithm.HMAC256(chaveDeAssinatura);
 		    return JWT.create()
-		        .withIssuer("API Voll.med")
+		        .withIssuer(apiFullName)
 		        .withSubject(usuario.getNomeDeUsuario())
 		        .withExpiresAt(instanteDeExpiracao())
 		        .sign(algoritmo);
@@ -39,7 +42,7 @@ public class TokenService {
 	public String getSubject(String tokenJWT) {
 		try {
 			var algoritmo = Algorithm.HMAC256(chaveDeAssinatura);
-			return JWT.require(algoritmo).withIssuer("API Voll.med").build().verify(tokenJWT).getSubject();
+			return JWT.require(algoritmo).withIssuer(apiFullName).build().verify(tokenJWT).getSubject();
 		} catch (JWTVerificationException e) {
 			throw new RuntimeException("Token JWT está inválido ou expirado", e);
 		}
