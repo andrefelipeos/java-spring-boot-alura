@@ -8,4 +8,9 @@ public record DadosDetalhamentoConsulta(
 		Long idDoPaciente,
 		LocalDateTime horarioComData) {
 
+	public DadosDetalhamentoConsulta(Consulta consulta) {
+		this(consulta.getIdentificador(), consulta.getMedico().getIdentificador(),
+				consulta.getPaciente().getIdentificador(), consulta.getHorario());
+	}
+
 }
