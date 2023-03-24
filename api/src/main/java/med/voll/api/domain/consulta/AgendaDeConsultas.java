@@ -38,6 +38,11 @@ public class AgendaDeConsultas {
 		validacoes.forEach(validacao -> validacao.validar(dados));
 
 		var medico = escolherMedico(dados);
+
+		if (medico == null) {
+			throw new ValidacaoException("Não existe médico especialista disponível na data escolhida");
+		}
+
 		var paciente = pacienteRepository.findById(dados.idDoPaciente()).get();
 		var consulta = new Consulta(null, medico, paciente, dados.horarioComData());
 		consultaRepository.save(consulta);
