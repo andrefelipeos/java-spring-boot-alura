@@ -21,3 +21,14 @@ O que foi feito ou utilizado nessa fase do projeto:
 - O esquema do banco de dados foi evoluído com *migrations* do Flyway
 - O Maven gerenciou as dependências, inclusive os módulos do Spring Boot
 - A biblioteca Lombok foi usada para gerar código *boilerplate*
+
+## Curso II: aplicando boas práticas e protegendo a API
+
+No segundo curso da formação foi adicionada uma classe para tratamento de erros.
+Com ela é retornado o código HTTP adequando para cada situação de exceção.
+Como, por exemplo, os códigos 201 - Created e 404 - Not Found.
+
+Também foram adicionados processos de autenticação e autorização para usuários.
+Para isso foram utilizados o módulo Spring Security e a biblioteca Auth0 JWT.
+Dessa forma, algumas requisições passam a ser atendidas somente se houver um *token* JWT válido em seu cabeçalho.
+Um *token* JWT é gerado sempre que um usuário faz *login* com sua senha e seu nome de usuário.
