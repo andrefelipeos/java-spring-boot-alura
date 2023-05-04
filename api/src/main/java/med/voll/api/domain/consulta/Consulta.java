@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,5 +42,15 @@ public class Consulta {
 	private Paciente paciente;
 
 	private LocalDateTime horario;
+	private boolean cancelada;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "motivo_cancelamento")
+	private MotivoCancelamento motivoParaCancelamento;
+
+	public void cancelar(MotivoCancelamento motivo) {
+		this.cancelada = true;
+		this.motivoParaCancelamento = motivo;
+	}
 
 }
