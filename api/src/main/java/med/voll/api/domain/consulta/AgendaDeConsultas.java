@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.validation.Valid;
 import med.voll.api.domain.ValidacaoException;
 import med.voll.api.domain.consulta.validacoes.ValidacaoAgendamentoConsulta;
 import med.voll.api.domain.medico.Medico;
@@ -44,7 +45,7 @@ public class AgendaDeConsultas {
 		}
 
 		var paciente = pacienteRepository.findById(dados.idDoPaciente()).get();
-		var consulta = new Consulta(null, medico, paciente, dados.horarioComData());
+		var consulta = new Consulta(null, medico, paciente, dados.horarioComData(), false, null);
 		consultaRepository.save(consulta);
 
 		return new DadosDetalhamentoConsulta(consulta);
@@ -60,6 +61,15 @@ public class AgendaDeConsultas {
 		}
 
 		return medicoRepository.escolherMedicoAleatorioLivreNoHorario(dados.especialidade(), dados.horarioComData());
+	}
+
+	public void cancelar(@Valid DadosCancelamentoConsulta dados) {
+		if (!consultaRepository.existsById(dados.identificadorDaConsulta())) {
+			throw new ValidacaoException("Não existe consulta com tal identificador.");
+		}
+
+		Consulta consulta = consultaRepository.getReferenceById(dados.identificadorDaConsulta());
+		consulta.cancelar(dados.motivo());
 	}
 
 }
