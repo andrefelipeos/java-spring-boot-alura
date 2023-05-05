@@ -1,9 +1,13 @@
 package med.voll.api.domain.medico;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -23,11 +27,26 @@ import med.voll.api.domain.paciente.Paciente;
 class MedicoRepositoryTest {
 
 	@Autowired
+	private MedicoRepository medicoRepository;
+
+	@Autowired
 	private TestEntityManager testEntityManager;
 
 	@Test
-	void testEscolherMedicoAleatorioLivreNoHorario() {
-		fail("Not yet implemented");
+	@DisplayName("Deveria retornar null quando houver um único médico cadastrado não está disponível no horário")
+	void escolherMedicoAleatorioLivreNoHorarioCenario01() {
+		LocalDateTime proximaSegundaAsDez = LocalDate.now()
+				.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+				.atTime(10, 0);
+
+		Medico medico = cadastrarMedico("medico", "medico@mail.com", "123456", Especialidade.CARDIOLOGIA);
+		Paciente paciente = cadastrarPaciente("paciente", "paciente@mail.com", "12345678900");
+		cadastrarConsulta(medico, paciente, proximaSegundaAsDez);
+
+		Medico medicoEscolhido = medicoRepository
+				.escolherMedicoAleatorioLivreNoHorario(Especialidade.CARDIOLOGIA, proximaSegundaAsDez);
+
+		assertThat(medicoEscolhido).isNull();
 	}
 
 	private void cadastrarConsulta(Medico medico, Paciente paciente, LocalDateTime data) {
