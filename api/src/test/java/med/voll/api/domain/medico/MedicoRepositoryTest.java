@@ -49,6 +49,21 @@ class MedicoRepositoryTest {
 		assertThat(medicoEscolhido).isNull();
 	}
 
+	@Test
+	@DisplayName("Deveria retornar médico cadastrado que está disponível no horário")
+	void escolherMedicoAleatorioLivreNoHorarioCenario02() {
+		LocalDateTime proximaSegundaAsDez = LocalDate.now()
+				.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+				.atTime(10, 0);
+
+		Medico medico = cadastrarMedico("medico", "medico@mail.com", "123456", Especialidade.CARDIOLOGIA);
+
+		Medico medicoEscolhido = medicoRepository
+				.escolherMedicoAleatorioLivreNoHorario(Especialidade.CARDIOLOGIA, proximaSegundaAsDez);
+
+		assertThat(medicoEscolhido).isEqualTo(medico);
+	}
+
 	private void cadastrarConsulta(Medico medico, Paciente paciente, LocalDateTime data) {
 		testEntityManager.persist(new Consulta (null, medico, paciente, data, false, null));
 	}
