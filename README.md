@@ -32,3 +32,11 @@ Também foram adicionados processos de autenticação e autorização para usuá
 Para isso foram utilizados o módulo Spring Security e a biblioteca Auth0 JWT.
 Dessa forma, algumas requisições passam a ser atendidas somente se houver um *token* JWT válido em seu cabeçalho.
 Um *token* JWT é gerado sempre que um usuário faz *login* com sua senha e seu nome de usuário.
+
+## Curso III: documentação, testes automatizados e *build* da API
+
+Os principais acréscimos feitos no curso III foram a documentação e os testes automatizados.
+
+A documentação foi gerada utilizando a biblioteca SpringDoc/OpenAPI. Essa biblioteca gera dois *endpoints* que listam todos os outros *endpoints* disponibilizadas pela API, incluindo seus tipos de parâmetros e retornos esperados. Um dos *endpoints* da documentação retorna as informações no formato JSON. O outro retorna uma interface web gráfica, por onde é possivel testar a API, substituindo softwares como Insomnia e Postman.
+
+Testes de unidade foram criados utilizando a biblioteca JUnit 5, porém eles só cobrem uma pequena parte do código. Por escolha, os testes utilizam seu próprio banco de dados MariaDB, e não um banco de dados em memória. A url do banco de dados de testes foi definida em um arquivo de propriedades próprio, que configura a profile *test*.
